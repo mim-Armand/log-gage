@@ -1,0 +1,12 @@
+.steps-container{
+    display: flex;
+    width: 98vw;
+    margin: 1vw;
+    background: rgba(0,0,0,.15);
+}
+.steps-step{
+    flex: 1;
+    /*padding: 12px;*/
+    margin: 9px;
+    border-radius: 3px;
+}

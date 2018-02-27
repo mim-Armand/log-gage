@@ -1,0 +1,47 @@
+version: 0.1.{build}
+
+platform:
+  - x64
+
+cache:
+  - node_modules -> package-lock.json
+  - app\node_modules -> package-lock.json
+#  - '%APPDATA%\npm-cache'
+#  - '%USERPROFILE%\.electron'
+
+init:
+  - git config --global core.autocrlf input
+
+install:
+  - ps: Install-Product node 6 x64
+  - echo "Commit Message:"
+  - echo %APPVEYOR_REPO_COMMIT_MESSAGE%
+  - ps: >-
+      If ($APPVEYOR_REPO_COMMIT_MESSAGE -match 'release candidate') {
+        echo "*** *** *** *** RELEASE CANDIDATE! *** *** *** ***";
+      } Else {
+        echo "*** *** *** *** NOT A RELEASE CANDIDATE *** *** *** ***";
+        echo $APPVEYOR_REPO_COMMIT_MESSAGE
+      }
+  - git reset --hard HEAD
+  - npm install npm -g
+  - npm install yarn -g
+  - npm install electron-builder@next # force install next version to test electron-builder
+  - npm install
+  - npm install --prefix ./client
+  - npm run build --prefix ./client
+  - npm prune
+
+build_script:
+  - node --version
+  - npm --version
+  #TODO!
+#  - ps: >-
+#      If ($APPVEYOR_REPO_COMMIT_MESSAGE -match 'release candidate') {
+#        yarn release
+#      } Else {
+#        yarn build
+#      }
+#  - npm run release
+
+test: off

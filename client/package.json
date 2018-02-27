@@ -1,0 +1,42 @@
+{
+  "name": "client",
+  "version": "0.1.0",
+  "private": true,
+  "homepage": ".",
+  "dependencies": {
+    "animate.css": "^3.6.1",
+    "axios": "^0.18.0",
+    "classnames": "^2.2.5",
+    "crypto-js": "^3.1.9-1",
+    "got": "^8.2.0",
+    "history": "^4.7.2",
+    "lint-staged": "^7.0.0",
+    "oauth-1.0a": "^2.2.4",
+    "prop-types": "^15.6.1",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-notification-system": "^0.2.17",
+    "react-redux": "^5.0.7",
+    "react-router-dom": "^4.2.2",
+    "react-router-redux": "next",
+    "react-scripts": "^1.1.1",
+    "redux": "^3.7.2",
+    "redux-persist": "^5.9.1",
+    "redux-thunk": "^2.2.0",
+    "twitter": "^1.7.1"
+  },
+  "devDependencies": {
+    "husky": "^0.14.3",
+    "prettier": "^1.11.0",
+    "react-styleguidist": "^6.2.5"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "flow": "flow",
+    "styleguide": "styleguidist server",
+    "styleguide:build": "styleguidist build"
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "name": "log-gage",
+  "productName": "Log-Gage",
+  "version": "0.0.1",
+  "description": "An standalone, open-source tooling application for AWS Cloud-Watch logs.",
+  "main": "main.js",
+  "scripts": {
+    "start": "concurrently \"BROWSER=none npm start --prefix ./client\" \"wait-on http://localhost:3000 && electron .\"",
+    "resume": "electron .",
+    "test": "./node_modules/jshint/bin/jshint main.js",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "postinstall": "electron-builder install-app-deps",
+    "release": "build",
+    "build": "build --publish never",
+    "prebuild": "npm run build --prefix ./client",
+    "build_main": "build --publish never"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mim-Armand/Log-Gage.git"
+  },
+  "keywords": [
+    "AWS",
+    "CloudWatch",
+    "Logging",
+    "Log",
+    "Cloud-Watch",
+    "tooling",
+    "electron",
+    "react",
+    "redux"
+  ],
+  "license": "ISC",
+  "author": "mim",
+  "bugs": {
+    "url": "https://github.com/mim-Armand/Log-Gage/issues"
+  },
+  "homepage": "https://www.linkedin.com/in/3dots/",
+  "devDependencies": {
+    "devtron": "^1.4.0",
+    "electron": "^1.8.2",
+    "electron-builder": "^20.2.0",
+    "jshint": "^2.9.5"
+  },
+  "build": {
+    "appId": "eu.armand.loggage",
+    "copyright": "Copyright © 2018 mim_Armand",
+    "productName": "LogGage!",
+    "files": [
+      "./client/build/**/*",
+      "main.js",
+      "version.html"
+    ],
+    "mac": {
+      "category": "public.app-category.social-networking",
+      "icon": "build/icon.icns",
+      "publish": [
+        "github"
+      ]
+    }
+  },
+  "dependencies": {
+    "concurrently": "^3.5.1",
+    "electron-is-dev": "^0.3.0",
+    "electron-log": "^2.2.14",
+    "electron-store": "^1.3.0",
+    "electron-updater": "^2.20.1",
+    "wait-on": "^2.1.0"
+  }
+}

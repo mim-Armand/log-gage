@@ -1,0 +1,16 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  background: linear-gradient(-45deg, #EE7752, #E73C7E, #23A6D5, #23D5AB);
+  width: 100wh;
+  height: 100vh;
+  background-size: 400% 400%;
+  animation: backgroundGradientAnimation 99s ease infinite;
+}
+
+@keyframes backgroundGradientAnimation {
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
