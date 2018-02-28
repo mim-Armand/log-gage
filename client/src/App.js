@@ -43,6 +43,7 @@ class App extends Component<Props, State> {
                         <Route exact path="/setup"
                                render={props => <Page_SetUp
                                     submitTwitterApp={this.props.stuffActions.testTwitterApp}
+                                    getAWSProfiles={this.props.stuffActions.getAWSProfiles}
                                     twitter_app={this.props.stuff.twitter_app}
                                     handle={this.props.stuff.handle}
                                     isLoading={this.props.stuff.isLoading | false}

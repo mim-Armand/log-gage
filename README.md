@@ -11,6 +11,9 @@ An standalone, open-source tooling application for AWS Cloud-Watch logs.
 <!-- [![Dependency Status](https://gemnasium.com/badges/github.com/mim-Armand/status.ctl.alexa.skill.svg)](https://gemnasium.com/github.com/mim-Armand/status.ctl.alexa.skill) -->
 
 
+## Install
+NPM package place holder:
+`https://www.npmjs.com/package/log-gage`
 
 # To run:
 `yarn start`

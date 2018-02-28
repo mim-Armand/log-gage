@@ -6,6 +6,14 @@ import OAuth from 'oauth-1.0a';
 function url() {
     return 'www.url.com';
 }
+export function getAWSProfiles(){
+    let ipcRenderer = window.ipcRenderer;
+    let mainValue = ipcRenderer.sendSync('getAWSProfiles');
+    console.log('AWS PROFILES: ', mainValue);
+    return (dispatch, getState ) =>{
+
+    }
+}
 
 function getOAuth(d, url){
     var oauth = OAuth({

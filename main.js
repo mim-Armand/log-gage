@@ -12,6 +12,43 @@ require('./auto-update.js');
 const Store = require('electron-store');
 const el_store = new Store();
 
+const AWS = require('aws-sdk');
+const awsProfiles = require('get-aws-profiles');
+
+// AWS.config.region = 'us-east-1';
+// var credentials = new AWS.SharedIniFileCredentials({profile: 'default'});
+
+// AWS.config.credentials = credentials;
+// var lambda = new AWS.Lambda();
+// var params = {};
+
+//----------------------------------------------------------------------------------------------------------------------
+//          Get AWS profiles list
+//
+ipcMain.on('getAWSProfiles', (event, arg) => {
+    event.returnValue = awsProfiles.get();
+});
+
+//----------------------------------------------------------------------------------------------------------------------
+//          IPC
+//
+// Listen for async message from renderer process
+ipcMain.on('async', (event, arg) => {
+    // Print 1
+    console.log(arg);
+    // Reply on async message from renderer process
+    event.sender.send('async-reply', 2);
+});
+
+// Listen for sync message from renderer process
+ipcMain.on('sync', (event, arg) => {
+    // Print 3
+    console.log(arg);
+    // Send value synchronously back to renderer process
+    event.returnValue = {test:'test', blah:'blahblah'};
+    // Send async message to renderer process
+    win.webContents.send('ping', 5);
+});
 
 //----------------------------------------------------------------------------------------------------------------------
 //          Persistence mechanism
@@ -77,7 +114,8 @@ if (process.platform === 'darwin') {
 }
 
 function checkForUpdates(){
-    dialog.showMessageBox({"type": "info", "title":"Updates", "message":"Checking for updates..", "detail":"We'll check for updates and notify you once there is one available.\n\nThank you."});
+    dialog.showMessageBox({"type": "info", "title":"Updates", "message":"Checking for updates..", "detail":"We'll " +
+        "check for updates and notify you once there is one available.\n\nThank you."});
 }
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -109,6 +147,21 @@ function createWindow () {
 
     // Open the DevTools.
     win.webContents.openDevTools({mode: "detach"});
+    console.log('=====================================');
+    // lambda.listFunctions(params, function(err, data) {
+    //     console.log('-----------------');
+    //     if (err) console.log(err, err.stack); // an error occurred
+    //     else     console.log(data);           // successful response
+    //     console.log('-----------------');
+    //     /*
+    //     data = {
+    //      Functions: [
+    //      ],
+    //      NextMarker: ""
+    //     }
+    //     */
+    // });
+    console.log('=====================================');
 
     // Emitted when the window is closed.
     win.on('closed', () => {

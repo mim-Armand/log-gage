@@ -1,7 +1,7 @@
 {
   "name": "log-gage",
   "productName": "Log-Gage",
-  "version": "0.0.1",
+  "version": "1.0.1",
   "description": "An standalone, open-source tooling application for AWS Cloud-Watch logs.",
   "main": "main.js",
   "scripts": {
@@ -61,11 +61,13 @@
     }
   },
   "dependencies": {
+    "aws-sdk": "^2.203.0",
     "concurrently": "^3.5.1",
     "electron-is-dev": "^0.3.0",
     "electron-log": "^2.2.14",
     "electron-store": "^1.3.0",
     "electron-updater": "^2.20.1",
+    "get-aws-profiles": "^1.0.3",
     "wait-on": "^2.1.0"
   }
 }
