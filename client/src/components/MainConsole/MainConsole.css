@@ -1,0 +1,8 @@
+.log-text{
+    text-align: left;
+    word-wrap: break-word;
+    margin: 33px;
+    font-family: monospace;
+    font-size: 1.5em;
+    font-weight: 300;
+}

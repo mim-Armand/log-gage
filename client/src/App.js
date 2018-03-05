@@ -21,6 +21,7 @@ import Page_SetUp from "./components/Page_SetUp/Page_SetUp";
 import Page_Search from "./components/Page_Search/Page_Search";
 import Page_Info from "./components/Page_Info/Page_Info";
 import Help_Twitter_App from "./components/Help_Twitter_App/Help_Twitter_App";
+import MainConsole from "./components/MainConsole/MainConsole";
 const history = createHistory();
 
 type Props = {
@@ -43,11 +44,18 @@ class App extends Component<Props, State> {
           <div className="App">
               <WindowBar/>
               <LeftDrawer
-                  awsProfiles = {this.props.stuff.awsProfiles}
-                  logGroups = {this.props.stuff.logGroups}
-                  getLogGroups = {this.props.stuffActions.getLogGroups}
-                  getLogEvents = {this.props.stuffActions.getLogEvents}
-                  isLoading = {this.props.stuff.isLoading}
+                  awsProfiles =         { this.props.stuff.awsProfiles             }
+                  logGroups =           { this.props.stuff.logGroups               }
+                  isLoading =           { this.props.stuff.isLoading               }
+                  isOpen =              { this.props.stuff.leftDrawerOpen          }
+                  getLogGroups =        { this.props.stuffActions.getLogGroups     }
+                  getLogEvents =        { this.props.stuffActions.getLogEvents     }
+                  toggleLeftDrawer =    { this.props.stuffActions.toggleLeftDrawer }
+              />
+              <MainConsole
+                  logEvents =           { this.props.stuff.logEvents               }
+                  currentLogGroupName = { this.props.stuff.currentLogGroupName     }
+                  toggleLeftDrawer =    { this.props.stuffActions.toggleLeftDrawer }
               />
               {/*<ConnectedRouter history={history}>*/}
                         {/*<span>*/}

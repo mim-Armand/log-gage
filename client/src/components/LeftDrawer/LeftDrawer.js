@@ -46,7 +46,9 @@ class LeftDrawer extends Component<Props, State> {
         super(props);
         this.state = {open: true, dropDownValue: 'default'};
     }
-    handleToggle = () => this.setState({open: !this.state.open});
+    // handleToggle = () => this.setState({open: !this.state.open});
+    toggleLeftDrawer = () => {
+        this.props.toggleLeftDrawer()};
     handleChange = (event, index, value) => this.setState({dropDownValue: value});
     fetchLogGroups = (event: object) => {
         this.props.getLogGroups(this.state.dropDownValue);
@@ -58,16 +60,12 @@ class LeftDrawer extends Component<Props, State> {
   render() {
     return (
         <div>
-            <RaisedButton
-                label="Toggle SideBar"
-                onClick={this.handleToggle}
-            />
             <Drawer
-                open={this.state.open}
+                open={this.props.isOpen}
                 docked={false}
                 containerClassName="drawer"
                 width="42%"
-                onRequestChange={(open) => this.setState({open})}
+                onRequestChange={this.toggleLeftDrawer}
             >
                 <Toolbar >
                     <ToolbarGroup firstChild={true}>
