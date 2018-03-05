@@ -11,6 +11,9 @@ An standalone, open-source tooling application for AWS Cloud-Watch logs.
 <!-- [![Dependency Status](https://gemnasium.com/badges/github.com/mim-Armand/status.ctl.alexa.skill.svg)](https://gemnasium.com/github.com/mim-Armand/status.ctl.alexa.skill) -->
 
 
+## Install
+NPM package place holder:
+`https://www.npmjs.com/package/log-gage`
 
 # To run:
 `yarn start`
@@ -38,3 +41,5 @@ Release candidates should have the combination word `release candidate` in the c
 
 ## TODO LIST:
 - [ ]  add more stuff to do!
+- [ ] ( component LeftDrawer ) >> test if array is empty show a man page and link to AWS docs to create profiles, if only one item ( default ) don't show the drop-down ( just metion default profile in use )
+- [ ] Support more ( or all ) regions ( right now, for the sake of time-to-market, `us-east-1` is hard-coded )

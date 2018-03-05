@@ -1,4 +1,12 @@
 export default {
+    awsProfiles: [],
+    logGroups: {
+        default: []
+    },
+    logEvents: {},
+    isLoading:{
+        logGroups: false
+    },
     stuff: [],
     test: "test",
     handle: "mim_Armand",

@@ -19,6 +19,7 @@ class Page_SetUp extends Component<Props, State> {
         super(props);
         this.formInputChange = this.formInputChange.bind(this);
         this.submitBtn = this.submitBtn.bind(this);
+        this.getAWSProfiles = this.getAWSProfiles.bind(this);
         this.state={
             TWITTER_HANDLE: `${this.props.handle || ""}`,
             TWITTER_CONSUMER_KEY: `${this.props.twitter_app.TWITTER_CONSUMER_KEY || ""}`,
@@ -50,9 +51,17 @@ class Page_SetUp extends Component<Props, State> {
         if( ! contains_error ) this.props.submitTwitterApp(this.state)
     }
 
+    getAWSProfiles(){
+        this.props.getAWSProfiles();
+    }
+
   render() {
     return (
         <div>
+            <button className="button button--naira button--round-s button--border-thin button--naira-up" onClick={this.getAWSProfiles}>
+                <i className="button__icon fa fa-check"></i>
+                <span>Submit</span>
+            </button>
             <Spinner isLoading={this.props.isLoading}/>
             <TextInput onChange={this.formInputChange} val={this.state.TWITTER_HANDLE} forval="TWITTER_HANDLE" placeHolder="Twitter Handle"></TextInput>
             <TextInput onChange={this.formInputChange} val={this.state.TWITTER_CONSUMER_KEY} forval="TWITTER_CONSUMER_KEY" placeHolder="Twitter app Customer Key"></TextInput>

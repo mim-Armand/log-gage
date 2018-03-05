@@ -2,9 +2,74 @@ import * as types from './actionTypes';
 import crypto from 'crypto-js';
 import axios from 'axios';
 import OAuth from 'oauth-1.0a';
+import AWS from 'aws-sdk';
 
 function url() {
     return 'www.url.com';
+}
+export function getAWSProfiles(){
+    let ipcRenderer = window.ipcRenderer;
+    return (dispatch, getState ) =>{
+        dispatch(updateStatePartial({awsProfiles: ipcRenderer.sendSync('getAWSProfiles')}));
+    }
+}
+
+export function getLogGroups(profileName, nextToken){
+    let creds = getAwsCredentials(profileName);
+    let cloudWatchLogs = new AWS.CloudWatchLogs(
+        {
+            region: 'us-east-1',
+            accessKeyId: creds.aws_access_key_id,
+            secretAccessKey: creds.aws_secret_access_key,
+        });
+    let params = {
+        nextToken: nextToken
+    };
+    return (dispatch, getState)=>{
+        dispatch ( updateStatePartial ( { isLoading:{ ...getState( ).isLoading, logGroups: true } } ) );
+        // If no nextToken > means it's a refresh call so we reset the state for that profile
+        if ( !nextToken ) dispatch ( updateStatePartial( { logGroups: { ...getState().stuff.logGroups, [ profileName ]: [ ] } } ) );
+        cloudWatchLogs.describeLogGroups(params, (err, data)=>{
+            dispatch ( updateStatePartial ( { isLoading:{ ...getState( ).isLoading, logGroups: false } } ) );
+            if(err){
+                console.error('ERROR WHILE FETCHING LOG GROUPS FROM AWS', err);
+                return;
+            }
+            dispatch ( updateStatePartial( { logGroups: { ...getState().stuff.logGroups, [ profileName ]: [ ...data.logGroups, ...getState().stuff.logGroups[profileName] ] } } ) );
+            if(data.nextToken) dispatch(getLogGroups( profileName, data.nextToken))
+        });
+    };
+}
+
+export function getLogEvents(profileName, logGroupName, nextToken){
+    let creds = getAwsCredentials(profileName);
+    let cloudWatchLogs = new AWS.CloudWatchLogs(
+        {
+            region: 'us-east-1',
+            accessKeyId: creds.aws_access_key_id,
+            secretAccessKey: creds.aws_secret_access_key,
+        });
+    let params = {
+        nextToken: nextToken,
+        logGroupName: logGroupName,
+        limit: 1
+    };
+    return( dispatch, getState )=>{
+        cloudWatchLogs.describeLogStreams(params, (err, data)=>{
+            if( !err && data.logStreams[0] ){
+                cloudWatchLogs.getLogEvents({...params, logStreamName: data.logStreams[0].logStreamName, limit: 50}, (err, data)=>{
+                    if(!err ){
+                        dispatch( updateStatePartial( { logEvents: { ...getState().stuff.logEvents, [ logGroupName ]: data.events } } ) );
+                    }
+                })
+            }
+        });
+    }
+}
+
+function getAwsCredentials(profileName){
+    let ipcRenderer = window.ipcRenderer;
+    return ipcRenderer.sendSync('getAWSProfile', profileName);
 }
 
 function getOAuth(d, url){

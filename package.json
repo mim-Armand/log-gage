@@ -1,13 +1,14 @@
 {
   "name": "log-gage",
   "productName": "Log-Gage",
-  "version": "0.0.1",
+  "version": "1.0.1",
   "description": "An standalone, open-source tooling application for AWS Cloud-Watch logs.",
   "main": "main.js",
   "scripts": {
     "start": "concurrently \"BROWSER=none npm start --prefix ./client\" \"wait-on http://localhost:3000 && electron .\"",
     "resume": "electron .",
     "test": "./node_modules/jshint/bin/jshint main.js",
+    "check": "npm-check",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
     "postinstall": "electron-builder install-app-deps",
@@ -41,7 +42,10 @@
     "devtron": "^1.4.0",
     "electron": "^1.8.2",
     "electron-builder": "^20.2.0",
-    "jshint": "^2.9.5"
+    "figlet": "^1.2.0",
+    "jshint": "^2.9.5",
+    "lolcatjs": "^2.3.1",
+    "npm-check": "^5.5.2"
   },
   "build": {
     "appId": "eu.armand.loggage",
@@ -61,11 +65,13 @@
     }
   },
   "dependencies": {
+    "aws-sdk": "^2.203.0",
     "concurrently": "^3.5.1",
     "electron-is-dev": "^0.3.0",
     "electron-log": "^2.2.14",
     "electron-store": "^1.3.0",
     "electron-updater": "^2.20.1",
+    "get-aws-profiles": "^1.0.5",
     "wait-on": "^2.1.0"
   }
 }
