@@ -27,6 +27,7 @@ export function getLogGroups(profileName, nextToken){
     };
     return (dispatch, getState)=>{
         dispatch ( updateStatePartial ( { isLoading:{ ...getState( ).isLoading, logGroups: true } } ) );
+        dispatch ( updateStatePartial ( { currentProfileName: profileName } ) );
         // If no nextToken > means it's a refresh call so we reset the state for that profile
         if ( !nextToken ) dispatch ( updateStatePartial( { logGroups: { ...getState().stuff.logGroups, [ profileName ]: [ ] } } ) );
         cloudWatchLogs.describeLogGroups(params, (err, data)=>{
@@ -55,6 +56,7 @@ export function getLogEvents(profileName, logGroupName, nextToken){
         limit: 1
     };
     return( dispatch, getState )=>{
+        dispatch ( updateStatePartial ( { currentLogGroupName: logGroupName } ) );
         cloudWatchLogs.describeLogStreams(params, (err, data)=>{
             if( !err && data.logStreams[0] ){
                 cloudWatchLogs.getLogEvents({...params, logStreamName: data.logStreams[0].logStreamName, limit: 50}, (err, data)=>{
@@ -64,6 +66,12 @@ export function getLogEvents(profileName, logGroupName, nextToken){
                 })
             }
         });
+    }
+}
+
+export function toggleLeftDrawer(){
+    return (dispatch, getState)=>{
+        dispatch( updateStatePartial ( { leftDrawerOpen: !getState().stuff.leftDrawerOpen } ) );
     }
 }
 
