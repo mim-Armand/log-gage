@@ -12,8 +12,21 @@ require('./auto-update.js');
 const Store = require('electron-store');
 const el_store = new Store();
 
-const AWS = require('aws-sdk');
 const awsProfiles = require('get-aws-profiles');
+
+//----------------------------------------------------------------------------------------------------------------------
+//          LOLCATJS!
+//
+const lolcatjs = require('lolcatjs');
+lolcatjs.options.seed = Math.round(Math.random() * 1000);
+lolcatjs.options.colors = true;
+lolcatjs.fromString('I can has Cheezburger?');
+
+//----------------------------------------------------------------------------------------------------------------------
+//          Figlet!
+//
+const figlet = require('figlet');
+figlet('LOG - GAGE ! !', (err, data)=>{console.log(data);});
 
 // AWS.config.region = 'us-east-1';
 // var credentials = new AWS.SharedIniFileCredentials({profile: 'default'});
@@ -30,12 +43,19 @@ ipcMain.on('getAWSProfiles', (event, arg) => {
 });
 
 //----------------------------------------------------------------------------------------------------------------------
+//          Get AWS profile Credentials
+//
+ipcMain.on('getAWSProfile', (event, profileName) => {
+    event.returnValue = awsProfiles.getProfile(profileName)
+});
+
+//----------------------------------------------------------------------------------------------------------------------
 //          IPC
 //
 // Listen for async message from renderer process
 ipcMain.on('async', (event, arg) => {
     // Print 1
-    console.log(arg);
+    lolcatjs.fromString(arg);
     // Reply on async message from renderer process
     event.sender.send('async-reply', 2);
 });
@@ -43,7 +63,7 @@ ipcMain.on('async', (event, arg) => {
 // Listen for sync message from renderer process
 ipcMain.on('sync', (event, arg) => {
     // Print 3
-    console.log(arg);
+    lolcatjs.fromString(arg);
     // Send value synchronously back to renderer process
     event.returnValue = {test:'test', blah:'blahblah'};
     // Send async message to renderer process
@@ -56,7 +76,7 @@ ipcMain.on('sync', (event, arg) => {
 function diskPersist(key, value){ // key accept dot-notation so is nestable
     el_store.set(key, value);
     el_store.set('unicorn', '🦄');
-    console.log(el_store.get('unicorn'));
+    lolcatjs.fromString(el_store.get('unicorn'));
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -129,8 +149,8 @@ function createWindow () {
 
     // Create the browser window.
     win = new BrowserWindow({
-        width: 600
-        ,height: 800
+        width: 1024
+        ,height: 768
         ,frame: false
         ,webPreferences: {webSecurity: false} // uncomment if trouble with CORS!
     });
@@ -147,12 +167,12 @@ function createWindow () {
 
     // Open the DevTools.
     win.webContents.openDevTools({mode: "detach"});
-    console.log('=====================================');
+    lolcatjs.fromString('=====================================');
     // lambda.listFunctions(params, function(err, data) {
-    //     console.log('-----------------');
-    //     if (err) console.log(err, err.stack); // an error occurred
-    //     else     console.log(data);           // successful response
-    //     console.log('-----------------');
+    //     lolcatjs.fromString('-----------------');
+    //     if (err) lolcatjs.fromString(err, err.stack); // an error occurred
+    //     else     lolcatjs.fromString(data);           // successful response
+    //     lolcatjs.fromString('-----------------');
     //     /*
     //     data = {
     //      Functions: [
@@ -161,7 +181,7 @@ function createWindow () {
     //     }
     //     */
     // });
-    console.log('=====================================');
+    lolcatjs.fromString('=====================================');
 
     // Emitted when the window is closed.
     win.on('closed', () => {

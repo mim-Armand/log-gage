@@ -12,6 +12,8 @@
     "got": "^8.2.0",
     "history": "^4.7.2",
     "lint-staged": "^7.0.0",
+    "material-ui": "^0.20.0",
+    "moment": "^2.21.0",
     "oauth-1.0a": "^2.2.4",
     "prop-types": "^15.6.1",
     "react": "^16.2.0",
