@@ -5,7 +5,8 @@ export default {
     },
     logEvents: {},
     isLoading:{
-        logGroups: false
+        logGroups: false,
+        logEvents: false
     },
     stuff: [],
     leftDrawerOpen: true,

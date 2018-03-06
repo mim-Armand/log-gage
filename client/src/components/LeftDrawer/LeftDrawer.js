@@ -19,6 +19,9 @@ import {pinkA200, transparent} from 'material-ui/styles/colors';
 import Badge from 'material-ui/Badge';
 import Chip from 'material-ui/Chip';
 import SvgIconFace from 'material-ui/svg-icons/action/face';
+import TextField from 'material-ui/TextField';
+import Fuse from 'fuse.js';
+
 
 
 
@@ -29,34 +32,89 @@ const style = {
     marginRight: 10,
 };
 
-
-
-
-
-
-type Props = {
-    foo: number,
-};
-type State = {
-    bar: number,
-};
-
 class LeftDrawer extends Component<Props, State> {
+
     constructor(props){
         super(props);
-        this.state = {open: true, dropDownValue: 'default'};
+        this.state = {
+            dropDownValue: 'default',
+            logGroupSearchValue: "",
+            logGroups: [],
+            filteredLogGroups: [],
+            currentLogEvent: "",
+        };
     }
-    // handleToggle = () => this.setState({open: !this.state.open});
+
+    componentWillReceiveProps(nextProps){
+        this.setState({logGroups: nextProps.logGroups})
+    }
+
+    componentDidMount(){
+        this.setState({
+            filteredLogGroups: this.props.logGroups[ this.state.dropDownValue ]
+        }, ()=>{
+            if (this.props.autoRefresh ) {
+                setInterval( ()=>{ this.getLogs() }, this.props.autoRefreshInt)
+            }
+        });
+    }
+
     toggleLeftDrawer = () => {
         this.props.toggleLeftDrawer()};
-    handleChange = (event, index, value) => this.setState({dropDownValue: value});
+
+    dropDownChanged = (event, index, value) => {
+        this.setState({
+            dropDownValue: value,
+            filteredLogGroups: this.filterLogGroups( this.state.logGroupSearchValue, value)
+        });
+    }
+
+    searchLogGroups = (event) => {
+        this.setState({
+            logGroupSearchValue: event.target.value,
+            filteredLogGroups: this.filterLogGroups( event.target.value )
+        });
+    };
+
     fetchLogGroups = (event: object) => {
         this.props.getLogGroups(this.state.dropDownValue);
         return;
     };
-    getLogs( logGroup ){
-        this.props.getLogEvents(this.state.dropDownValue, logGroup);
+
+    logItemSelected(logGroup ){
+        this.setState({currentLogEvent: logGroup}, ()=>{
+            this.getLogs();
+        });
     }
+
+    getLogs(){ if ( ! this.state.currentLogEvent ) return;
+        this.props.getLogEvents(this.state.dropDownValue, this.state.currentLogEvent);
+    }
+
+    filterLogGroups(string, profileName){
+        let currentLogGroup = this.props.logGroups[ ( profileName || this.state.dropDownValue ) ];
+        if ( !string || string == "" ) return currentLogGroup;
+        let options = {
+            // caseSensitive: true,
+            // tokenize: true,
+            shouldSort: true,
+            findAllMatches: true,
+            // includeScore: true,
+            // includeMatches: true,
+            threshold: 0.6,
+            location: 0,
+            distance: 100,
+            maxPatternLength: 32,
+            minMatchCharLength: 1,
+            keys: [
+                "logGroupName",
+                "arn"
+            ]
+        };
+        let fuse = new Fuse(currentLogGroup, options);
+        return fuse.search(string);
+    }
+
   render() {
     return (
         <div>
@@ -69,7 +127,7 @@ class LeftDrawer extends Component<Props, State> {
             >
                 <Toolbar >
                     <ToolbarGroup firstChild={true}>
-                        <DropDownMenu value={this.state.dropDownValue} onChange={this.handleChange}>
+                        <DropDownMenu value={this.state.dropDownValue} onChange={this.dropDownChanged}>
                             <MenuItem checked={true} primaryText="AWS Profiles" disabled={true} leftIcon={<b>¶</b>}/>
                             <Divider />
                             { //TODO: test if array is empty show a man page and link to AWS docs to create profiles, if only one item ( default ) don't show the drop-down ( just metion default profile in use )
@@ -89,11 +147,17 @@ class LeftDrawer extends Component<Props, State> {
                 <LinearProgress mode="indeterminate" />
                 }
                 <Divider inset={true} />
+                <TextField
+                    hintText="String / Hash"
+                    floatingLabelText="Search Log Groups"
+                    onChange={this.searchLogGroups}
+                />
                 <List>
-                    { this.props.logGroups[this.state.dropDownValue] &&
-                        this.props.logGroups[this.state.dropDownValue].map((item, index)=>{
+                    { ( this.props.logGroups[this.state.dropDownValue] &&
+                        this.state.filteredLogGroups) &&
+                        this.state.filteredLogGroups.map((item, index)=>{
                             return <ListItem
-                                onClick={()=>{this.getLogs(item.logGroupName)}}
+                                onClick={()=>{this.logItemSelected(item.logGroupName)}}
                                 key={item.logGroupName}
                                 primaryText={
                                     <span className="truncate">{item.logGroupName.match(/[^\/]+$/)[0]}</span>

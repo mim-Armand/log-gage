@@ -51,11 +51,14 @@ class App extends Component<Props, State> {
                   getLogGroups =        { this.props.stuffActions.getLogGroups     }
                   getLogEvents =        { this.props.stuffActions.getLogEvents     }
                   toggleLeftDrawer =    { this.props.stuffActions.toggleLeftDrawer }
+                  autoRefresh      =    { true }
+                  autoRefreshInt   =    { 5454 }
               />
               <MainConsole
                   logEvents =           { this.props.stuff.logEvents               }
                   currentLogGroupName = { this.props.stuff.currentLogGroupName     }
                   toggleLeftDrawer =    { this.props.stuffActions.toggleLeftDrawer }
+                  isLoading           = { this.props.stuff.isLoading               }
               />
               {/*<ConnectedRouter history={history}>*/}
                         {/*<span>*/}

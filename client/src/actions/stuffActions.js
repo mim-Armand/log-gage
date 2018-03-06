@@ -56,8 +56,10 @@ export function getLogEvents(profileName, logGroupName, nextToken){
         limit: 1
     };
     return( dispatch, getState )=>{
+        dispatch ( updateStatePartial ( { isLoading:{ ...getState( ).isLoading, logEvents: true } } ) );
         dispatch ( updateStatePartial ( { currentLogGroupName: logGroupName } ) );
         cloudWatchLogs.describeLogStreams(params, (err, data)=>{
+            dispatch ( updateStatePartial ( { isLoading:{ ...getState( ).isLoading, logEvents: false } } ) );
             if( !err && data.logStreams[0] ){
                 cloudWatchLogs.getLogEvents({...params, logStreamName: data.logStreams[0].logStreamName, limit: 50}, (err, data)=>{
                     if(!err ){
