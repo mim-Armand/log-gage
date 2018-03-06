@@ -20,7 +20,10 @@ import Badge from 'material-ui/Badge';
 import Chip from 'material-ui/Chip';
 import SvgIconFace from 'material-ui/svg-icons/action/face';
 import Subheader from 'material-ui/Subheader';
-import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
+import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import FlatButton from 'material-ui/FlatButton';
+
+
 
 
 
@@ -61,17 +64,17 @@ class MainConsole extends Component<Props, State> {
                     <ToolbarTitle text="Expand for more settings >>" />
                     <RaisedButton label="Select Log groups and Profiles" onClick={this.toggleLeftDrawer} />
                 </ToolbarGroup>
+                <ToolbarGroup>
+                    <ToolbarTitle text={`Last Fetched: ${moment().format("H:m:s:S")}`} />
+                </ToolbarGroup>
             </Toolbar>
 
 
+            { this.props.isLoading.logEvents &&
+            <LinearProgress mode="indeterminate" />
+            }
 
 
-
-
-
-            <List>
-                <Subheader>{currentLogGroup}</Subheader>
-                <Divider inset={false} />
 
             { ( !currentLogEvent || currentLogEvent.length == 0 ) &&
             <Card>
@@ -90,22 +93,26 @@ class MainConsole extends Component<Props, State> {
                 </CardText>
             </Card>
             }
+
+
+
+
+            <Card>
+                <CardTitle title={this.props.currentLogGroupName} subtitle="Log Events for the above log group ( Auto-refresh enabled : every ~5 sec. )" />
+            </Card>
+
+
             {  currentLogEvent && this.props.logEvents[ this.props.currentLogGroupName ].map((item, index)=>{
                 return (
                     <span key={index}>
-                        <ListItem
-                            primaryText={moment(item.timestamp).calendar()}
-                            secondaryText="message:"
-                            secondaryTextLines={2}
-                        ></ListItem>
-                        <p className="log-text">{item.message}</p>
-                <Divider inset={true} />
+                        <p className="log-text"><h5>{moment(item.timestamp).calendar()}</h5>{item.message}</p>
+                        <Divider inset={false} />
                     </span>
                 )
             }) }
 
 
-            </List>
+
 
 
 

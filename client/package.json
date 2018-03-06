@@ -9,6 +9,7 @@
     "axios": "^0.18.0",
     "classnames": "^2.2.5",
     "crypto-js": "^3.1.9-1",
+    "fuse.js": "^3.2.0",
     "got": "^8.2.0",
     "history": "^4.7.2",
     "lint-staged": "^7.0.0",
