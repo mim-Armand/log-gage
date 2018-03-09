@@ -78,7 +78,6 @@ class LeftDrawer extends Component<Props, State> {
 
     fetchLogGroups = (event: object) => {
         this.props.getLogGroups(this.state.dropDownValue);
-        return;
     };
 
     logItemSelected(logGroup ){

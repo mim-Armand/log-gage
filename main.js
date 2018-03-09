@@ -149,8 +149,8 @@ function createWindow () {
 
     // Create the browser window.
     win = new BrowserWindow({
-        width: 1024
-        ,height: 768
+        width: 1800
+        ,height: 900
         ,frame: false
         ,webPreferences: {webSecurity: false} // uncomment if trouble with CORS!
     });
@@ -166,7 +166,7 @@ function createWindow () {
     }));
 
     // Open the DevTools.
-    win.webContents.openDevTools({mode: "detach"});
+    if(isDev) win.webContents.openDevTools({mode: "detach"});
     lolcatjs.fromString('=====================================');
     // lambda.listFunctions(params, function(err, data) {
     //     lolcatjs.fromString('-----------------');
