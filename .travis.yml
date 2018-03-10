@@ -36,8 +36,8 @@ before_install:
 #  - npm install --prefix ./client
 
 install:
-  - npm install
-  - npm install --prefix ./client
+#  - npm install
+#  - npm install --prefix ./client
 
 script:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
