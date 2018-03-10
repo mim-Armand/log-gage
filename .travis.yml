@@ -45,7 +45,7 @@ script:
   - echo "should be here ^^^";
   - export CERTIFICATE_P12=Certificate.p12;
   - echo $CERTIFICATE_P12;
-  - cat $CERTIFICATE_P12 > test.crt;
+  - echo $CERTIFICATE_P12 > test.crt;
   - cat ./test.crt;
   - echo $CERTIFICATE_OSX_P12 | base64 --decode > $CERTIFICATE_P12;
   - ls -la
