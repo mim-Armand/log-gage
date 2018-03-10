@@ -50,7 +50,7 @@ script:
       security unlock-keychain -p thetemporarytransientpassword $KEYCHAIN; \
       security import $CERTIFICATE_P12 -k $KEYCHAIN -T /usr/bin/codesign; \
 
-      security find-identity -v ; \
+#      security find-identity -v ; \
     fi;
 #  - npm run release
 #  - |
