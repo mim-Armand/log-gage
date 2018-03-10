@@ -28,7 +28,27 @@ To run/test in Chrome we need to enable CORS temporarily by running`open -a Goog
 `yarn release`
 #### Through CI (Multi-platform):
 Release candidates should have the combination word `release candidate` in the commit message otherwise the **CI** pipelines will just build the project and run the tests but won't publish the release to GitHub releases as a draft.
+> In travis ci, the GH_TOKEN should be set to the token obtained from github ( so it can push the release draft )
 
+## Mac OSX:
+
+### Code Signing:
+
+#### For distribution outside apple store:
+
+1 . create a *CSR* file ( Keychain Access > Certificate Assistance > Request a ... )
+2 . Go to [Apple Developer](https://developer.apple.com/account/mac/certificate/distribution) and create two following certs using the above CSR file ( macOS > Production >> )
+    * Developer ID Application ( to sign the app )
+    * Developer ID Installer ( to sign the installer )
+3. Create a `.p12` file ( Keychain > keys > find the one you want > right click > export ) ( password may be left empty )
+4. Base64 encode the file ( `$ base64 ./LoggageCertificates.p12 > ./LoggageCertificates.p12.base64` )
+5. set an env var in Travis for `CSC_LINK` = to the above base64 hash.
+
+
+
+
+#### ICON:
+Use [IconUtil](https://developer.apple.com/library/content/documentation/GraphicsAnimation/Conceptual/HighResolutionOSX/Optimizing/Optimizing.html) from Apple to make icons for OSX.
 
 
 
