@@ -53,7 +53,7 @@ script:
       security create-keychain -p thetemporarytransientpassword $KEYCHAIN; \
       security default-keychain -s $KEYCHAIN; \
       security unlock-keychain -p thetemporarytransientpassword $KEYCHAIN; \
-      security import $CERTIFICATE_P12 -k $KEYCHAIN -P "" -T /usr/bin/codesign; \
+      security import $CERTIFICATE_P12 -k $KEYCHAIN; \
 
       security find-identity -v ; \
     fi;
