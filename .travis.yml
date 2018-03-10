@@ -49,6 +49,7 @@ script:
       security default-keychain -s $KEYCHAIN; \
       security unlock-keychain -p thetemporarytransientpassword $KEYCHAIN; \
       security import $CERTIFICATE_P12 -k $KEYCHAIN -T /usr/bin/codesign; \
+      echo "test";
 
 #      security find-identity -v ; \
     fi;
