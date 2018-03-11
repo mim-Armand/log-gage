@@ -51,7 +51,7 @@ script:
       security import $CERTIFICATE_P12 -k $KEYCHAIN -P $CERTIFICATE_PASSWORD -T /usr/bin/codesign; \
 
     fi;
-  - npm run release
+  - npm run dist
 #  - |
 #    if [ "$TRAVIS_OS_NAME" == "linux" ]; then
 #      if ([[ "$TRAVIS_COMMIT_MESSAGE" == *"release candidate"*  ]]); then \
