@@ -27,7 +27,8 @@
     "redux": "^3.7.2",
     "redux-persist": "^5.9.1",
     "redux-thunk": "^2.2.0",
-    "twitter": "^1.7.1"
+    "twitter": "^1.7.1",
+    "get-aws-profiles": "^1.0.5"
   },
   "devDependencies": {
     "husky": "^0.14.3",
