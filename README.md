@@ -34,12 +34,12 @@ Release candidates should have the combination word `release candidate` in the c
 
 ### Code Signing:
 
-#### For distribution outside apple store:
+#### For distribution outside of apple store:
 
  > https://www.electron.build/code-signing#where-to-buy-code-signing-certificate
 
-1 . create a *CSR* file ( Keychain Access > Certificate Assistance > Request a ... )
-2 . Go to [Apple Developer](https://developer.apple.com/account/mac/certificate/distribution) and create two following certs using the above CSR file ( macOS > Production >> )
+1. create a *CSR* file ( Keychain Access > Certificate Assistance > Request a ... )
+2. Go to [Apple Developer](https://developer.apple.com/account/mac/certificate/distribution) and create two following certs using the above CSR file ( macOS > Production >> )
     * Developer ID Application ( to sign the app )
     * Developer ID Installer ( to sign the installer )
 3. Create a `.p12` file ( Keychain > keys > find the one you want > right click > export ) ( a password is required )
@@ -63,6 +63,9 @@ if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
     fi;
 ```
 
+#### For MAS (Mac Application Store):
+ > Publishing to MAS is not supported at this time only due to not having enough time add all the required permissions and handle errors and all the additional required logic in addition of the debugging over-head it may have.
+ > We may add MAS support in the future if we receive a good feedback, contribution in the aspect is very much welcomed and appreciated as well.
 
 
 

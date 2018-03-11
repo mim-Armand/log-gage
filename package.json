@@ -42,7 +42,6 @@
     "devtron": "^1.4.0",
     "electron": "^1.8.2",
     "electron-builder": "^20.2.0",
-    "get-aws-profiles": "^1.0.5",
     "jshint": "^2.9.5",
     "npm-check": "^5.5.2"
   },
