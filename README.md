@@ -40,9 +40,10 @@ Release candidates should have the combination word `release candidate` in the c
 2 . Go to [Apple Developer](https://developer.apple.com/account/mac/certificate/distribution) and create two following certs using the above CSR file ( macOS > Production >> )
     * Developer ID Application ( to sign the app )
     * Developer ID Installer ( to sign the installer )
-3. Create a `.p12` file ( Keychain > keys > find the one you want > right click > export ) ( password may be left empty )
+3. Create a `.p12` file ( Keychain > keys > find the one you want > right click > export ) ( a password is required )
 4. Base64 encode the file ( `$ base64 ./LoggageCertificates.p12 > ./LoggageCertificates.p12.base64` )
-5. set an env var in Travis for `CSC_LINK` = to the above base64 hash.
+    > [Here](http://jviotti.com/2016/03/16/how-to-code-sign-os-x-electron-apps-in-travis-ci.html) is a brief tut for these steps.
+5. set an env var in Travis for and `CERTIFICATE_P12` = to the above base64 hash.
 
 
 
