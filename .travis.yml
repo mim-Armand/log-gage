@@ -49,9 +49,8 @@ script:
       security default-keychain -s $KEYCHAIN; \
       security unlock-keychain -p thetemporarytransientpassword $KEYCHAIN; \
       security import $CERTIFICATE_P12 -k $KEYCHAIN -P $CERTIFICATE_PASSWORD -T /usr/bin/codesign; \
-
+      npm run release; \
     fi;
-  - npm run release
 #  - |
 #    if [ "$TRAVIS_OS_NAME" == "linux" ]; then
 #      if ([[ "$TRAVIS_COMMIT_MESSAGE" == *"release candidate"*  ]]); then \

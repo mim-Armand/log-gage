@@ -36,6 +36,8 @@ Release candidates should have the combination word `release candidate` in the c
 
 #### For distribution outside apple store:
 
+ > https://www.electron.build/code-signing#where-to-buy-code-signing-certificate
+
 1 . create a *CSR* file ( Keychain Access > Certificate Assistance > Request a ... )
 2 . Go to [Apple Developer](https://developer.apple.com/account/mac/certificate/distribution) and create two following certs using the above CSR file ( macOS > Production >> )
     * Developer ID Application ( to sign the app )
@@ -43,7 +45,23 @@ Release candidates should have the combination word `release candidate` in the c
 3. Create a `.p12` file ( Keychain > keys > find the one you want > right click > export ) ( a password is required )
 4. Base64 encode the file ( `$ base64 ./LoggageCertificates.p12 > ./LoggageCertificates.p12.base64` )
     > [Here](http://jviotti.com/2016/03/16/how-to-code-sign-os-x-electron-apps-in-travis-ci.html) is a brief tut for these steps.
-5. set an env var in Travis for and `CERTIFICATE_P12` = to the above base64 hash.
+5. set these env vars in Travis settings:
+    * `CSC_KEY_PASSWORD` And `CERTIFICATE_PASSWORD` = the password above
+    * `CERTIFICATE_P12` and `CSC_LINK` = to the above base64 hash.
+    * `CSC_IDENTITY_AUTO_DISCOVERY` = `true`
+6. With the following script already in `.travis.yml` file, everything's set and runing the build should release a signed app!
+```bash
+if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      export CERTIFICATE_P12=Certificate.p12; \
+      echo $CERTIFICATE_OSX_P12 | base64 --decode > $CERTIFICATE_P12; \
+      export KEYCHAIN=build.keychain; \
+      security create-keychain -p thetemporarytransientpassword $KEYCHAIN; \
+      security default-keychain -s $KEYCHAIN; \
+      security unlock-keychain -p thetemporarytransientpassword $KEYCHAIN; \
+      security import $CERTIFICATE_P12 -k $KEYCHAIN -P $CERTIFICATE_PASSWORD -T /usr/bin/codesign; \
+      npm run release; \
+    fi;
+```
 
 
 
