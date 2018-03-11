@@ -50,10 +50,8 @@ script:
       security default-keychain -s $KEYCHAIN; \
       security unlock-keychain -p thetemporarytransientpassword $KEYCHAIN; \
       security import $CERTIFICATE_P12 -k $KEYCHAIN -T /usr/bin/codesign; \
-      echo "test";
-  - echo "Finishing the build!"
-
-#      security find-identity -v ; \
+      echo "test"; \
+      echo "Finishing the build!"; \
     fi;
 #  - npm run release
 #  - |
