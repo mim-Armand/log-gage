@@ -36,9 +36,7 @@ before_install:
 #  - npm install --prefix ./client
 
 install:
-  - npm i -g react-scripts;
   - npm i --prefix ./client;
-  - npm run build --prefix ./client;
   - npm i;
 
 script:
@@ -51,7 +49,6 @@ script:
       security default-keychain -s $KEYCHAIN; \
       security unlock-keychain -p thetemporarytransientpassword $KEYCHAIN; \
       security import $CERTIFICATE_P12 -k $KEYCHAIN -P $CERTIFICATE_PASSWORD -T /usr/bin/codesign; \
-      npm run build; \
       npm run release; \
     fi;
 #  - |
