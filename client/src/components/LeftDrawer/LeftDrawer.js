@@ -48,7 +48,9 @@ class LeftDrawer extends Component<Props, State> {
     }
 
     componentWillReceiveProps(nextProps){
-        this.setState({logGroups: nextProps.logGroups})
+        this.setState({logGroups: nextProps.logGroups},()=>{
+            this.searchLogGroups({target:{value: this.state.searchLogGroups }});
+        })
     }
 
     componentDidMount(){
@@ -58,6 +60,7 @@ class LeftDrawer extends Component<Props, State> {
             if (this.props.autoRefresh ) {
                 setInterval( ()=>{ this.getLogs() }, this.props.autoRefreshInt)
             }
+            this.fetchLogGroups();
         });
     }
 
@@ -68,6 +71,8 @@ class LeftDrawer extends Component<Props, State> {
         this.setState({
             dropDownValue: value,
             filteredLogGroups: this.filterLogGroups( this.state.logGroupSearchValue, value)
+        }, ()=>{
+            this.fetchLogGroups();
         });
     }
 
