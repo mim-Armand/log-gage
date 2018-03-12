@@ -30,6 +30,7 @@
     "twitter": "^1.7.1"
   },
   "devDependencies": {
+    "get-aws-profiles": "^1.0.5",
     "husky": "^0.14.3",
     "prettier": "^1.11.0",
     "react-styleguidist": "^6.2.5"

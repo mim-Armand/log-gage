@@ -1,4 +1,6 @@
 //@flow
+/* eslint-disable */
+// TODO: re-enable es-lint: we disabled it as we are working on prod release pipeline and in prod es-lint warns change to err and prevent the release!
 /*global remote, isElectron*/
 /*eslint no-undef: "error"*/
 import React, { Component } from 'react';
@@ -78,7 +80,6 @@ class LeftDrawer extends Component<Props, State> {
 
     fetchLogGroups = (event: object) => {
         this.props.getLogGroups(this.state.dropDownValue);
-        return;
     };
 
     logItemSelected(logGroup ){

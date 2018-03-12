@@ -1,4 +1,5 @@
-osx_image: xcode9
+osx_image: xcode9.3beta
+#osx_image: xcode9.2
 
 sudo: required
 services: docker
@@ -12,11 +13,12 @@ matrix:
   include:
     - os: osx
       language: node_js
-      node_js: "8"
+      node_js: "9"
 #    - os: linux
 #      language: generic
 
 cache:
+  yarn: true
   directories:
   - node_modules
   - $HOME/.cache/electron
@@ -30,44 +32,61 @@ before_install:
     else \
       echo "*** *** *** *** NOT A RELEASE CANDIDATE *** *** *** ***"; \
     fi \
-  - npm install
-  - npm install --prefix ./client
+#  - npm install
+#  - npm install --prefix ./client
+
+install:
+  - npm i --prefix ./client;
+  - npm run build --prefix ./client;
+  - npm i;
 
 script:
   - |
-    if [ "$TRAVIS_OS_NAME" == "linux" ]; then
-      if ([[ "$TRAVIS_COMMIT_MESSAGE" == *"release candidate"*  ]]); then \
-        echo ">>> >>> >>> RELEASE CANDIDATE! <<< <<< <<<"; \
-        docker run --rm \
-          --env-file <(env | grep -iE 'DEBUG|NODE_|ELECTRON_|YARN_|NPM_|CI|CIRCLE|TRAVIS|APPVEYOR_|CSC_|_TOKEN|_KEY|AWS_|STRIP|BUILD_') \
-          --env ELECTRON_CACHE="/root/.cache/electron" \
-          --env ELECTRON_BUILDER_CACHE="/root/.cache/electron-builder" \
-          -v ${PWD}:/project \
-          -v ~/.cache/electron:/root/.cache/electron \
-          -v ~/.cache/electron-builder:/root/.cache/electron-builder \
-          electronuserland/builder:wine \
-          /bin/bash -c "yarn --link-duplicates --pure-lockfile && yarn release --linux --win"
-      else \
-        echo ">>> NOT A RELEASE CANDIDATE <<<"; \
-        docker run --rm \
-          --env-file <(env | grep -iE 'DEBUG|NODE_|ELECTRON_|YARN_|NPM_|CI|CIRCLE|TRAVIS|APPVEYOR_|CSC_|_TOKEN|_KEY|AWS_|STRIP|BUILD_') \
-          --env ELECTRON_CACHE="/root/.cache/electron" \
-          --env ELECTRON_BUILDER_CACHE="/root/.cache/electron-builder" \
-          -v ${PWD}:/project \
-          -v ~/.cache/electron:/root/.cache/electron \
-          -v ~/.cache/electron-builder:/root/.cache/electron-builder \
-          electronuserland/builder:wine \
-          /bin/bash -c "yarn --link-duplicates --pure-lockfile && yarn build --linux --win"
-      fi \
-    else \
-      if ([[ "$TRAVIS_COMMIT_MESSAGE" == *"release candidate"*  ]]); then \
-        echo ">>> >>> >>> RELEASE CANDIDATE! <<< <<< <<<"; \
-        yarn release; \
-      else \
-        echo ">>> NOT A RELEASE CANDIDATE <<<"; \
-        yarn build; \
-      fi \
-    fi
+    if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      export CERTIFICATE_P12=Certificate.p12; \
+      echo $CERTIFICATE_OSX_P12 | base64 --decode > $CERTIFICATE_P12; \
+      export KEYCHAIN=build.keychain; \
+      security create-keychain -p thetemporarytransientpassword $KEYCHAIN; \
+      security default-keychain -s $KEYCHAIN; \
+      security unlock-keychain -p thetemporarytransientpassword $KEYCHAIN; \
+      security import $CERTIFICATE_P12 -k $KEYCHAIN -P $CERTIFICATE_PASSWORD -T /usr/bin/codesign; \
+      npm run build; \
+      npm run release; \
+    fi;
+#  - |
+#    if [ "$TRAVIS_OS_NAME" == "linux" ]; then
+#      if ([[ "$TRAVIS_COMMIT_MESSAGE" == *"release candidate"*  ]]); then \
+#        echo ">>> >>> >>> RELEASE CANDIDATE! <<< <<< <<<"; \
+#        docker run --rm \
+#          --env-file <(env | grep -iE 'DEBUG|NODE_|ELECTRON_|YARN_|NPM_|CI|CIRCLE|TRAVIS|APPVEYOR_|CSC_|_TOKEN|_KEY|AWS_|STRIP|BUILD_') \
+#          --env ELECTRON_CACHE="/root/.cache/electron" \
+#          --env ELECTRON_BUILDER_CACHE="/root/.cache/electron-builder" \
+#          -v ${PWD}:/project \
+#          -v ~/.cache/electron:/root/.cache/electron \
+#          -v ~/.cache/electron-builder:/root/.cache/electron-builder \
+#          electronuserland/builder:wine \
+#          /bin/bash -c "yarn --link-duplicates --pure-lockfile && yarn release --linux --win"
+#      else \
+#        echo ">>> NOT A RELEASE CANDIDATE <<<"; \
+#        docker run --rm \
+#          --env-file <(env | grep -iE 'DEBUG|NODE_|ELECTRON_|YARN_|NPM_|CI|CIRCLE|TRAVIS|APPVEYOR_|CSC_|_TOKEN|_KEY|AWS_|STRIP|BUILD_') \
+#          --env ELECTRON_CACHE="/root/.cache/electron" \
+#          --env ELECTRON_BUILDER_CACHE="/root/.cache/electron-builder" \
+#          -v ${PWD}:/project \
+#          -v ~/.cache/electron:/root/.cache/electron \
+#          -v ~/.cache/electron-builder:/root/.cache/electron-builder \
+#          electronuserland/builder:wine \
+#          /bin/bash -c "yarn --link-duplicates --pure-lockfile && yarn build --linux --win"
+#      fi \
+#    else \
+#      if ([[ "$TRAVIS_COMMIT_MESSAGE" == *"release candidate"*  ]]); then \
+#        echo ">>> >>> >>> RELEASE CANDIDATE! <<< <<< <<<"; \
+#        yarn release; \
+#      else \
+#        echo ">>> NOT A RELEASE CANDIDATE <<<"; \
+#        yarn build; \
+#      fi \
+#    fi
 
 before_cache:
   - rm -rf $HOME/.cache/electron-builder/wine
@@ -75,9 +94,3 @@ before_cache:
 branches:
   except:
     - "/^v\\d+\\.\\d+\\.\\d+$/"
-
-notifications:
-  slack:
-    rooms:
-      secure: pcz7ctfnK39wx0cQkdiL4C779lfSxkpmzbHR1nQozeG2Kd0KEh3Y1j0iYqZg/qIZLQCtBkIq5Kvnh1CB35AdgPqCiMVp/tNpy99mstzYRoKG2S6fnYPMM23IJPZUG2eOvqRf0oONbWCn5mpnQwm9aHgYwIfjwBxHDrSMyOe1iGvAMkPgNJTF3/6yoCKYE2gck36/XwCxaWckrTPKrT2c2Rm64urHsphkVOKbvwd5qw2rPHWQQQ7ftQ2fkxLiWvmjwVd5OHqIQT846nd2vG4wqfnSzR6wxV9tCt1JgEZOTfrJnpoY+cCqBtRW5C/AuSCdnKM2pkdjYDpBU1Iqf8JO7nCCfpBrtqb7bbrLQ8IJeRMAKCdHCLchmb0n3SzvQx8Y+q0J6v1TYWKnXmcZGiMLPZpuuXhc/LPItZ/8r0PvBt8TelVGD9Vkp4h0JqqmKyPD5aVpXATtirIjbtuesOFMWL6OAQMkTikgUsI3D3AeNmZEip25ssk7xImv5GVkir940xmY9QlNjN9pgAQmYO3D73xcXKwGfDiJyFM7vJAJWJ1la5WeG43JC3fEjXsnMMHBTQNPhJpyBJp8FGt9xWY1uIhx69DYYGAfFF02IetLt9o4NuQWDOEkR8jwq9e8ZOZSRNhCB6r1xWkC4jIlbXADH/F5IZa40KVO5t2Ws7ehv8M=
-  email: false

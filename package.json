@@ -32,7 +32,7 @@
     "react",
     "redux"
   ],
-  "license": "ISC",
+  "license": "CC",
   "author": "mim",
   "bugs": {
     "url": "https://github.com/mim-Armand/Log-Gage/issues"
@@ -42,9 +42,7 @@
     "devtron": "^1.4.0",
     "electron": "^1.8.2",
     "electron-builder": "^20.2.0",
-    "figlet": "^1.2.0",
     "jshint": "^2.9.5",
-    "lolcatjs": "^2.3.1",
     "npm-check": "^5.5.2"
   },
   "build": {
@@ -54,10 +52,11 @@
     "files": [
       "./client/build/**/*",
       "main.js",
+      "auto-update.js",
       "version.html"
     ],
     "mac": {
-      "category": "public.app-category.social-networking",
+      "category": "public.app-category.developer-tools",
       "icon": "build/icon.icns",
       "publish": [
         "github"
@@ -71,7 +70,9 @@
     "electron-log": "^2.2.14",
     "electron-store": "^1.3.0",
     "electron-updater": "^2.20.1",
+    "figlet": "^1.2.0",
     "get-aws-profiles": "^1.0.5",
+    "lolcatjs": "^2.3.1",
     "wait-on": "^2.1.0"
   }
 }
