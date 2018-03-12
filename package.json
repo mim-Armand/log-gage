@@ -1,7 +1,7 @@
 {
   "name": "log-gage",
   "productName": "Log-Gage",
-  "version": "0.0.1",
+  "version": "1.0.2",
   "description": "An standalone, open-source tooling application for AWS Cloud-Watch logs.",
   "main": "main.js",
   "scripts": {
