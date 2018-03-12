@@ -167,7 +167,7 @@ function createWindow () {
 
     // Open the DevTools.
     if(isDev) win.webContents.openDevTools({mode: "detach"});
-    win.webContents.openDevTools({mode: "detach"}); //todo: remove this line after testing/debugging!
+    // win.webContents.openDevTools({mode: "detach"}); //todo: remove this line after testing/debugging!
     lolcatjs.fromString('=====================================');
     // lambda.listFunctions(params, function(err, data) {
     //     lolcatjs.fromString('-----------------');
