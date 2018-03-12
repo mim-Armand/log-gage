@@ -2,9 +2,84 @@ import * as types from './actionTypes';
 import crypto from 'crypto-js';
 import axios from 'axios';
 import OAuth from 'oauth-1.0a';
+import AWS from 'aws-sdk';
 
 function url() {
     return 'www.url.com';
+}
+export function getAWSProfiles(){
+    let ipcRenderer = window.ipcRenderer;
+    return (dispatch, getState ) =>{
+        dispatch(updateStatePartial({awsProfiles: ipcRenderer.sendSync('getAWSProfiles')}));
+    }
+}
+
+export function getLogGroups(profileName, nextToken){
+    let creds = getAwsCredentials(profileName);
+    let cloudWatchLogs = new AWS.CloudWatchLogs(
+        {
+            region: 'us-east-1',
+            accessKeyId: creds.aws_access_key_id,
+            secretAccessKey: creds.aws_secret_access_key,
+        });
+    let params = {
+        nextToken: nextToken
+    };
+    return (dispatch, getState)=>{
+        dispatch ( updateStatePartial ( { isLoading:{ ...getState( ).isLoading, logGroups: true } } ) );
+        dispatch ( updateStatePartial ( { currentProfileName: profileName } ) );
+        // If no nextToken > means it's a refresh call so we reset the state for that profile
+        if ( !nextToken ) dispatch ( updateStatePartial( { logGroups: { ...getState().stuff.logGroups, [ profileName ]: [ ] } } ) );
+        cloudWatchLogs.describeLogGroups(params, (err, data)=>{
+            dispatch ( updateStatePartial ( { isLoading:{ ...getState( ).isLoading, logGroups: false } } ) );
+            if(err){
+                console.error('ERROR WHILE FETCHING LOG GROUPS FROM AWS', err);
+                return;
+            }
+            dispatch ( updateStatePartial( { logGroups: { ...getState().stuff.logGroups, [ profileName ]: [ ...data.logGroups, ...getState().stuff.logGroups[profileName] ] } } ) );
+            if(data.nextToken) dispatch(getLogGroups( profileName, data.nextToken))
+        });
+    };
+}
+
+export function getLogEvents(profileName, logGroupName, nextToken){
+    let creds = getAwsCredentials(profileName);
+    let cloudWatchLogs = new AWS.CloudWatchLogs(
+        {
+            region: 'us-east-1',
+            accessKeyId: creds.aws_access_key_id,
+            secretAccessKey: creds.aws_secret_access_key,
+        });
+    let params = {
+        nextToken: nextToken,
+        logGroupName: logGroupName,
+        limit: 1
+    };
+    return( dispatch, getState )=>{
+        dispatch ( updateStatePartial ( { isLoading:{ ...getState( ).isLoading, logEvents: true } } ) );
+        dispatch ( updateStatePartial ( { currentLogGroupName: logGroupName } ) );
+        cloudWatchLogs.describeLogStreams(params, (err, data)=>{
+            dispatch ( updateStatePartial ( { isLoading:{ ...getState( ).isLoading, logEvents: false } } ) );
+            if( !err && data.logStreams[0] ){
+                cloudWatchLogs.getLogEvents({...params, logStreamName: data.logStreams[0].logStreamName, limit: 999, startFromHead: false,}, (err, data)=>{
+                    if(!err ){
+                        dispatch( updateStatePartial( { logEvents: { ...getState().stuff.logEvents, [ logGroupName ]: data.events } } ) );
+                    }
+                })
+            }
+        });
+    }
+}
+
+export function toggleLeftDrawer(){
+    return (dispatch, getState)=>{
+        dispatch( updateStatePartial ( { leftDrawerOpen: !getState().stuff.leftDrawerOpen } ) );
+    }
+}
+
+function getAwsCredentials(profileName){
+    let ipcRenderer = window.ipcRenderer;
+    return ipcRenderer.sendSync('getAWSProfile', profileName);
 }
 
 function getOAuth(d, url){
@@ -116,6 +191,7 @@ export function getFollowers(d, cursor, count){
         const url = `https://api.twitter.com/1.1/followers/ids.json?cursor=${ cursor || cfh_.cursor }&screen_name=mim_Armand&count=${ count || getState().stuff.fetch_followers_batch}`;
         return axios(url, { headers: getOAuth(d, url), json: true})
             .then( (response) => {
+                dispatch(updateStatePartial({isLoading: false}));
                 console.log('Followers', fh_.length, cfh_.sofar, response.data);
                 let el_store;
                  if (typeof El_Store !== 'undefined') el_store = new El_Store({cwd: 'followers', name: fh_.length});
@@ -133,8 +209,6 @@ export function getFollowers(d, cursor, count){
                 }));
             })
             .catch(function (error) { console.error(error); }); //TODO: show an error message
-
-        dispatch(updateStatePartial({isLoading: false}));
     }
 }
 
@@ -175,7 +249,7 @@ export function getFollowersCycle(){
                                 let crsr_ = fh_[ fh_.length - 1 ].cursor; // next cursor
                                     console.log(" _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ cursor: ", crsr_);
                                     let addInterval = 15000; // TODO: this could/should be set to 0 for maximum speed!
-                                    if( crsr_ == 0 ){ // it was the last batch so we have to start over after a while!
+                                    if( crsr_ === 0 ){ // it was the last batch so we have to start over after a while!
                                         console.log(" WE NEED TO START A NEW BATCH! ");
                                         dispatch(updateStatePartial({
                                             fetch_followers_history: [...fh_, {

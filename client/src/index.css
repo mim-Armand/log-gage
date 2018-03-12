@@ -7,6 +7,12 @@ body {
   height: 100vh;
   background-size: 400% 400%;
   animation: backgroundGradientAnimation 99s ease infinite;
+  overflow: hidden;
+}
+#root{
+  overflow: scroll;
+  width: 100%;
+  height: 100%;
 }
 
 @keyframes backgroundGradientAnimation {

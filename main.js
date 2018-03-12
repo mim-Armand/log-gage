@@ -12,6 +12,63 @@ require('./auto-update.js');
 const Store = require('electron-store');
 const el_store = new Store();
 
+const awsProfiles = require('get-aws-profiles');
+
+//----------------------------------------------------------------------------------------------------------------------
+//          LOLCATJS!
+//
+const lolcatjs = require('lolcatjs');
+lolcatjs.options.seed = Math.round(Math.random() * 1000);
+lolcatjs.options.colors = true;
+lolcatjs.fromString('I can has Cheezburger?');
+
+//----------------------------------------------------------------------------------------------------------------------
+//          Figlet!
+//
+const figlet = require('figlet');
+figlet('LOG - GAGE ! !', (err, data)=>{console.log(data);});
+
+// AWS.config.region = 'us-east-1';
+// var credentials = new AWS.SharedIniFileCredentials({profile: 'default'});
+
+// AWS.config.credentials = credentials;
+// var lambda = new AWS.Lambda();
+// var params = {};
+
+//----------------------------------------------------------------------------------------------------------------------
+//          Get AWS profiles list
+//
+ipcMain.on('getAWSProfiles', (event, arg) => {
+    event.returnValue = awsProfiles.get();
+});
+
+//----------------------------------------------------------------------------------------------------------------------
+//          Get AWS profile Credentials
+//
+ipcMain.on('getAWSProfile', (event, profileName) => {
+    event.returnValue = awsProfiles.getProfile(profileName)
+});
+
+//----------------------------------------------------------------------------------------------------------------------
+//          IPC
+//
+// Listen for async message from renderer process
+ipcMain.on('async', (event, arg) => {
+    // Print 1
+    lolcatjs.fromString(arg);
+    // Reply on async message from renderer process
+    event.sender.send('async-reply', 2);
+});
+
+// Listen for sync message from renderer process
+ipcMain.on('sync', (event, arg) => {
+    // Print 3
+    lolcatjs.fromString(arg);
+    // Send value synchronously back to renderer process
+    event.returnValue = {test:'test', blah:'blahblah'};
+    // Send async message to renderer process
+    win.webContents.send('ping', 5);
+});
 
 //----------------------------------------------------------------------------------------------------------------------
 //          Persistence mechanism
@@ -19,7 +76,7 @@ const el_store = new Store();
 function diskPersist(key, value){ // key accept dot-notation so is nestable
     el_store.set(key, value);
     el_store.set('unicorn', '🦄');
-    console.log(el_store.get('unicorn'));
+    lolcatjs.fromString(el_store.get('unicorn'));
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -77,7 +134,8 @@ if (process.platform === 'darwin') {
 }
 
 function checkForUpdates(){
-    dialog.showMessageBox({"type": "info", "title":"Updates", "message":"Checking for updates..", "detail":"We'll check for updates and notify you once there is one available.\n\nThank you."});
+    dialog.showMessageBox({"type": "info", "title":"Updates", "message":"Checking for updates..", "detail":"We'll " +
+        "check for updates and notify you once there is one available.\n\nThank you."});
 }
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -85,14 +143,14 @@ function checkForUpdates(){
 let win;
 
 function createWindow () {
-    app.dock.setBadge('Hi!👋')
+    app.dock.setBadge('Hi!👋');
     // const menu = Menu.buildFromTemplate(template); //todo: uncomment these two lines and add copy/paste to the application menu ( https://github.com/electron/electron/issues/4107 )
     // Menu.setApplicationMenu(menu);
 
     // Create the browser window.
     win = new BrowserWindow({
-        width: 600
-        ,height: 800
+        width: 1800
+        ,height: 900
         ,frame: false
         ,webPreferences: {webSecurity: false} // uncomment if trouble with CORS!
     });
@@ -108,7 +166,23 @@ function createWindow () {
     }));
 
     // Open the DevTools.
-    win.webContents.openDevTools({mode: "detach"});
+    if(isDev) win.webContents.openDevTools({mode: "detach"});
+    // win.webContents.openDevTools({mode: "detach"}); //todo: remove this line after testing/debugging!
+    lolcatjs.fromString('=====================================');
+    // lambda.listFunctions(params, function(err, data) {
+    //     lolcatjs.fromString('-----------------');
+    //     if (err) lolcatjs.fromString(err, err.stack); // an error occurred
+    //     else     lolcatjs.fromString(data);           // successful response
+    //     lolcatjs.fromString('-----------------');
+    //     /*
+    //     data = {
+    //      Functions: [
+    //      ],
+    //      NextMarker: ""
+    //     }
+    //     */
+    // });
+    lolcatjs.fromString('=====================================');
 
     // Emitted when the window is closed.
     win.on('closed', () => {

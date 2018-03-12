@@ -26,7 +26,7 @@ class WindowBar extends Component<Props, State> {
               <a onClick={this.minimize}><i className="btns fa fa-caret-circle-down fa-xs"></i></a>
               <a onClick={this.maximize}><i className="btns fa fa-caret-circle-up fa-xs"></i></a>
           </span>
-          <span className="left-block"><i className="fab fa-twitter"></i>  TwiTool.</span>
+          <span className="left-block"><i className="fas fa-plane"></i>  Log-Gage!</span>
       </div>
     );
   }

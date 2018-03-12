@@ -1,0 +1,31 @@
+#left_drawer{
+}
+
+.truncate {
+    text-overflow: ellipsis!important;
+    white-space: nowrap;
+    width: 100%;
+    display: inline-block;
+    overflow: hidden;
+}
+
+.drawer{
+    overflow-x: hidden!important;
+}
+.left-drawer-chips{
+    float: right;
+    top: -15px;
+}
+
+.left-drawer-chips{
+    height: 18px;
+    /*line-height: 24px!important;*/
+}
+
+.left-drawer-chips>span{
+    line-height: 18px!important;
+}
+
+.unclickable, .unclickable *, .unclickable * * {
+    pointer-events: none!important;
+}
