@@ -191,6 +191,7 @@ export function getFollowers(d, cursor, count){
         const url = `https://api.twitter.com/1.1/followers/ids.json?cursor=${ cursor || cfh_.cursor }&screen_name=mim_Armand&count=${ count || getState().stuff.fetch_followers_batch}`;
         return axios(url, { headers: getOAuth(d, url), json: true})
             .then( (response) => {
+                dispatch(updateStatePartial({isLoading: false}));
                 console.log('Followers', fh_.length, cfh_.sofar, response.data);
                 let el_store;
                  if (typeof El_Store !== 'undefined') el_store = new El_Store({cwd: 'followers', name: fh_.length});
@@ -208,8 +209,6 @@ export function getFollowers(d, cursor, count){
                 }));
             })
             .catch(function (error) { console.error(error); }); //TODO: show an error message
-
-        dispatch(updateStatePartial({isLoading: false}));
     }
 }
 
@@ -250,7 +249,7 @@ export function getFollowersCycle(){
                                 let crsr_ = fh_[ fh_.length - 1 ].cursor; // next cursor
                                     console.log(" _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ cursor: ", crsr_);
                                     let addInterval = 15000; // TODO: this could/should be set to 0 for maximum speed!
-                                    if( crsr_ == 0 ){ // it was the last batch so we have to start over after a while!
+                                    if( crsr_ === 0 ){ // it was the last batch so we have to start over after a while!
                                         console.log(" WE NEED TO START A NEW BATCH! ");
                                         dispatch(updateStatePartial({
                                             fetch_followers_history: [...fh_, {

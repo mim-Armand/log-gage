@@ -10,9 +10,6 @@ type State = {
 };
 
 class Help_Twitter_App extends Component<Props, State> {
-    constructor(props){
-        super(props);
-    }
   render() {
     return (
       <div className="help-container">
