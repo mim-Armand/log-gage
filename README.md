@@ -85,3 +85,4 @@ Use [IconUtil](https://developer.apple.com/library/content/documentation/Graphic
 - [ ]  add more stuff to do!
 - [ ] ( component LeftDrawer ) >> test if array is empty show a man page and link to AWS docs to create profiles, if only one item ( default ) don't show the drop-down ( just metion default profile in use )
 - [ ] Support more ( or all ) regions ( right now, for the sake of time-to-market, `us-east-1` is hard-coded )
+- [ ] Add support for other platforms
