@@ -24,10 +24,15 @@ import SvgIconFace from 'material-ui/svg-icons/action/face';
 import Subheader from 'material-ui/Subheader';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
+import TextField from 'material-ui/TextField';
 
 
 
-
+const styles = {
+    underlineStyle: {
+        borderColor: "#fff",
+    }
+};
 
 
 
@@ -55,6 +60,10 @@ class MainConsole extends Component<Props, State> {
     toggleLeftDrawer = () => {
         this.props.toggleLeftDrawer()
     };
+    searchInPage = (event, value) => {
+        // console.log('search for: ',value)
+        this.props.searchInPage();
+    }
   render() {
       let currentLogGroup = this.props.currentLogGroupName;
       let currentLogEvent = this.props.logEvents[ currentLogGroup ];
@@ -67,7 +76,7 @@ class MainConsole extends Component<Props, State> {
                     <RaisedButton label="Select Log groups and Profiles" onClick={this.toggleLeftDrawer} />
                 </ToolbarGroup>
                 <ToolbarGroup>
-                    <ToolbarTitle text={`Last Fetched: ${moment().format("H:m:s:S")}`} />
+                    <RaisedButton label="Search Logs" onClick={this.searchInPage} />
                 </ToolbarGroup>
             </Toolbar>
 

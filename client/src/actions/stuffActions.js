@@ -14,6 +14,14 @@ export function getAWSProfiles(){
     }
 }
 
+export function searchInPage(){
+    let electronSearch = window.electronSearch;
+    electronSearch.open();
+    return (dispatch, getState)=>{
+        dispatch( updateStatePartial ( { } ) );
+    }
+}
+
 export function getLogGroups(profileName, nextToken){
     let creds = getAwsCredentials(profileName);
     let cloudWatchLogs = new AWS.CloudWatchLogs(
