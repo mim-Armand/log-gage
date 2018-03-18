@@ -61,6 +61,7 @@ class App extends Component<Props, State> {
                   currentLogGroupName = { this.props.stuff.currentLogGroupName     }
                   toggleLeftDrawer =    { this.props.stuffActions.toggleLeftDrawer }
                   isLoading           = { this.props.stuff.isLoading               }
+                  searchInPage        = { this.props.stuffActions.searchInPage     }
               />
               {/*<ConnectedRouter history={history}>*/}
                         {/*<span>*/}

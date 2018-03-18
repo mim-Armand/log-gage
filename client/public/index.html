@@ -16,7 +16,10 @@
       <script defer src="./fontawesome/js/fontawesome.min.js"></script>
       <script>
           isElectron = (typeof require !== 'undefined');
+          // const path = (isElectron)? require('path') : undefined; //todo: to edit search window css
+          // console.log('hhhhhhhh', path.join(__dirname, '..//search-page.css')) //todo: to edit search window css
           const electron = (isElectron)? require('electron') : undefined;
+          const searchInPage = require('electron-in-page-search').default;
           // const { remote, BrowserWindow, shell, ipcRenderer} = isElectron? require("electron") : {remote:null, BrowserWindow:null, shell: null, ipcRenderer: null};
           if( isElectron ){
               remote        = electron.remote;
@@ -25,6 +28,9 @@
               ipcRenderer   = electron.ipcRenderer;
           }
           ipcRenderer = require("electron").ipcRenderer;
+          electronSearch = isElectron ? { open: ()=>{searchInPage(remote.getCurrentWebContents(),{
+                  // customCssPath: path.join(__dirname, '..//search-page.css') //todo: to edit search window css
+              }).openSearchWindow()} } : null;
           const app = isElectron ? remote.app: null;
           const os = isElectron? require('os'): null;
           const platform = isElectron? os.platform() + '_' + os.arch() : 'web';
