@@ -99,6 +99,8 @@ Use [IconUtil](https://developer.apple.com/library/content/documentation/Graphic
 
 ## TODO LIST:
 - [ ]  add more stuff to do!
+- [ ] Add/Edit the app icon/logo ( currently borrowed from TwiTool! )
+- [ ] Publish to App store (?!)
 - [ ] The maximize/Minimize functionality is gone ( not visible anymore! ), fix it
 - [ ] Support more ( or all ) regions ( right now, for the sake of time-to-market, `us-east-1` is hard-coded )
 - [ ] Add support for other platforms
