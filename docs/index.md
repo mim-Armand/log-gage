@@ -4,14 +4,12 @@ Hi and welcome to the Log-Gage project!
 
 > For source code and contribution go to [GitHub](https://github.com/mim-Armand/log-gage).
 
-**Log-Gage!** is a tool that allow developers to fetch and monitor their AWS Cloud-Watch logs in real time and give the the ability to search through the logs, log-groups and AWS-profiles.
+**Log-Gage!** is a GUI tool that allows developers to fetch and monitor their AWS Cloud-Watch logs in real time and give the the ability to search through the logs, log-groups and AWS-profiles.
 
 
 ## Download / Installation:
 
-You can download this tool from it's GitHub release page:
-
-https://github.com/mim-Armand/log-gage/releases
+You can download this tool from [it's GitHub release page](https://github.com/mim-Armand/log-gage/releases).
 
 For **MAC OSX** Please download the zip file **log-gage-X.X.X-mac.zip** and open the app ( we will, in the future, provide an installer for this platform )
 
