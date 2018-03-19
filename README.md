@@ -2,7 +2,23 @@
 An standalone, open-source tooling application for AWS Cloud-Watch logs.
 
 
-<!-- ![Screenshot1](./screenshots/01.png "Twitool screenshot 01") -->
+## Screen-shots:
+
+Log vies and AWS profiles list to select (Supports suggestion / filtering of the log-groups) :
+
+![Screenshot1](./screenshots/01.jpg "Log-Gage! screenshot 01")
+
+Multi-AWS-profiles on the same machine is supported:
+
+![Screenshot2](./screenshots/02.jpg "Log-Gage! screenshot 02")
+
+Left drawer closed ( just the searchable console ):
+
+![Screenshot2](./screenshots/03.jpg "Log-Gage! screenshot 03")
+
+Search the log contents functionality ( it also search the whole pages content ):
+
+![Screenshot2](./screenshots/04.jpg "Log-Gage! screenshot 04")
 
 
 
@@ -83,6 +99,11 @@ Use [IconUtil](https://developer.apple.com/library/content/documentation/Graphic
 
 ## TODO LIST:
 - [ ]  add more stuff to do!
-- [ ] ( component LeftDrawer ) >> test if array is empty show a man page and link to AWS docs to create profiles, if only one item ( default ) don't show the drop-down ( just metion default profile in use )
+- [ ] The maximize/Minimize functionality is gone ( not visible anymore! ), fix it
 - [ ] Support more ( or all ) regions ( right now, for the sake of time-to-market, `us-east-1` is hard-coded )
 - [ ] Add support for other platforms
+
+## Done:
+- [ ] ( component LeftDrawer ) >> test if array is empty show a man page and link to AWS docs to create profiles, if only one item ( default ) don't show the drop-down ( just metion default profile in use )
+- [ ] Added search in logs functionality ( using native chromium page search )
+- [ ] Added some screen shots.
