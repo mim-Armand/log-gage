@@ -64,6 +64,7 @@ class MainConsole extends Component<Props, State> {
         // console.log('search for: ',value)
         this.props.searchInPage();
     }
+
   render() {
       let currentLogGroup = this.props.currentLogGroupName;
       let currentLogEvent = this.props.logEvents[ currentLogGroup ];

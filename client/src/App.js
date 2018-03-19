@@ -40,29 +40,50 @@ class App extends Component<Props, State> {
         this.props.stuffActions.getAWSProfiles();
     }
 
+    NoProfile = ()=>{
+        return (
+            <div>
+                <p><h1>No AWS Profile was found!</h1>
+                    Please Google <b>"AWS Profiles"</b> to find-out what they are and how to add AWS configuration files to your system.<br/><br/>
+                    Then come back here to see the magic!<br/>
+                    <small>This software uses built-in AWS CLI/SDK credentials to transfer your cloud-watch events and logs to you safely and securly.<br/>
+                        Hence the reason why it won't work without AWS CLI configurations being set up correctly in your system.<br/>
+                        It's easy and fast! Just set it up and come back!</small>
+                </p>
+            </div>
+        )
+    }
+
   render() {
     return (
         <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
           <div className="App">
               <WindowBar/>
-              <LeftDrawer
-                  awsProfiles =         { this.props.stuff.awsProfiles             }
-                  logGroups =           { this.props.stuff.logGroups               }
-                  isLoading =           { this.props.stuff.isLoading               }
-                  isOpen =              { this.props.stuff.leftDrawerOpen          }
-                  getLogGroups =        { this.props.stuffActions.getLogGroups     }
-                  getLogEvents =        { this.props.stuffActions.getLogEvents     }
-                  toggleLeftDrawer =    { this.props.stuffActions.toggleLeftDrawer }
-                  autoRefresh      =    { true }
-                  autoRefreshInt   =    { 5454 }
-              />
-              <MainConsole
-                  logEvents =           { this.props.stuff.logEvents               }
-                  currentLogGroupName = { this.props.stuff.currentLogGroupName     }
-                  toggleLeftDrawer =    { this.props.stuffActions.toggleLeftDrawer }
-                  isLoading           = { this.props.stuff.isLoading               }
-                  searchInPage        = { this.props.stuffActions.searchInPage     }
-              />
+              { this.props.stuff.awsProfiles.length < 1 &&
+                <this.NoProfile/>
+              }
+              { this.props.stuff.awsProfiles.length > 0 &&
+                  <LeftDrawer
+                      awsProfiles =         { this.props.stuff.awsProfiles             }
+                      logGroups =           { this.props.stuff.logGroups               }
+                      isLoading =           { this.props.stuff.isLoading               }
+                      isOpen =              { this.props.stuff.leftDrawerOpen          }
+                      getLogGroups =        { this.props.stuffActions.getLogGroups     }
+                      getLogEvents =        { this.props.stuffActions.getLogEvents     }
+                      toggleLeftDrawer =    { this.props.stuffActions.toggleLeftDrawer }
+                      autoRefresh      =    { true }
+                      autoRefreshInt   =    { 5454 }
+                  />
+              }
+              { this.props.stuff.awsProfiles.length > 0 &&
+                  <MainConsole
+                      logEvents =           { this.props.stuff.logEvents               }
+                      currentLogGroupName = { this.props.stuff.currentLogGroupName     }
+                      toggleLeftDrawer =    { this.props.stuffActions.toggleLeftDrawer }
+                      isLoading           = { this.props.stuff.isLoading               }
+                      searchInPage        = { this.props.stuffActions.searchInPage     }
+                  />
+              }
               {/*<ConnectedRouter history={history}>*/}
                         {/*<span>*/}
                             {/*<Route exact path="*" component={Steps}/>*/}

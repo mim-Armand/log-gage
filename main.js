@@ -46,7 +46,13 @@ ipcMain.on('getAWSProfiles', (event, arg) => {
 //          Get AWS profile Credentials
 //
 ipcMain.on('getAWSProfile', (event, profileName) => {
-    event.returnValue = awsProfiles.getProfile(profileName)
+    var results = [];
+    try {
+        results = awsProfiles.getProfile(profileName)
+    } catch (err){
+        console.log('ERR:', err)
+    }
+    event.returnValue = results;
 });
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -62,7 +68,6 @@ ipcMain.on('async', (event, arg) => {
 
 // Listen for sync message from renderer process
 ipcMain.on('sync', (event, arg) => {
-    // Print 3
     lolcatjs.fromString(arg);
     // Send value synchronously back to renderer process
     event.returnValue = {test:'test', blah:'blahblah'};
