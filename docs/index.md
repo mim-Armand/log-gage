@@ -2,7 +2,7 @@
 
 Hi and welcome to the Log-Gage project!
 
-> For source code and contribution go to [GitHub](https://github.com/vitvad/Access-Control-Allow-Origin/issues).
+> For source code and contribution go to [GitHub](https://github.com/mim-Armand/log-gage).
 
 **Log-Gage!** is a tool that allow developers to fetch and monitor their AWS Cloud-Watch logs in real time and give the the ability to search through the logs, log-groups and AWS-profiles.
 
